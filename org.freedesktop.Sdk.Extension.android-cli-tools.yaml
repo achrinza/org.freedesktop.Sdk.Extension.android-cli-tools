@@ -1,0 +1,31 @@
+id: org.freedesktop.Sdk.Extension.android-cli-tools
+name: Android CLI Tools
+branch: '23.08'
+runtime: org.freedesktop.Sdk
+runtime-version: '23.08'
+sdk: org.freedesktop.Sdk
+build-extension: true
+separate-locales: false
+appstream-compose: false
+modules:
+  - name: android-cli-tools
+    buildsystem: simple
+    build-options:
+      build-args:
+        - --share=network
+    sources:
+      - type: archive
+        url: https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
+        sha256: 2d2d50857e4eb553af5a6dc3ad507a17adf43d115264b1afc116f95c92e5e258
+    build-commands:
+      - mv * $FLATPAK_DEST
+  - name: scripts
+    buildsystem: simple
+    sources:
+      - type: script
+        commands:
+          - export PATH=$PATH:/usr/lib/sdk/android-cli-tools/bin
+          - export ANDROID_HOME=~/.android/sdk
+        dest-filename: enable.sh
+    build-commands:
+      - cp enable.sh $FLATPAK_DEST
